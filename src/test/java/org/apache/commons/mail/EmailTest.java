@@ -57,4 +57,13 @@ public class EmailTest {
 		// Should throw an exception for having an empty key
 		email.addHeader("", "ValueStr");
 	} // END of Test 2 for addHeader(String name, String value)
+	
+	// Test for addReplyTo(String email, String name)
+	@Test
+	public void testAddReplyTo() throws Exception {
+		// Call addReplyTo with first email in TEST_EMAILS and "John Doe"
+		email.addReplyTo(TEST_EMAILS[0], "John Doe");
+		// Check if the Reply To email address is ab@cd.com
+		assertEquals("ab@cd.com", email.getReplyToAddresses().get(0).getAddress());
+	} // END of Test for addReplyTo(String email, String name)
 }
