@@ -66,4 +66,13 @@ public class EmailTest {
 		// Check if the Reply To email address is ab@cd.com
 		assertEquals("ab@cd.com", email.getReplyToAddresses().get(0).getAddress());
 	} // END of Test for addReplyTo(String email, String name)
+	
+	// Test for setFrom(String email)
+	@Test
+	public void testSetFrom() throws Exception {
+		// Call setFrom with the first email in TEST_EMAILS
+		email.setFrom(TEST_EMAILS[0]);
+		// Check if the From email address is ab@cd.com
+		assertEquals("ab@cd.com", email.getFromAddress().toString());
+	} // END of Test for setFrom(String email)
 }
