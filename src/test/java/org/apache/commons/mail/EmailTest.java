@@ -1,10 +1,15 @@
 package org.apache.commons.mail;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Properties;
 
+import javax.mail.Address;
 import javax.mail.Session;
+import javax.mail.internet.MimeMultipart;
 
 import org.junit.After;
 import org.junit.Before;
@@ -104,4 +109,99 @@ public class EmailTest {
 		// 		Don't need to save the result since it should throw an exception
 		email.getMailSession();
 	} // END of Test 2 for getMailSession()
+	
+	// Test 1 for buildMimeMessage()
+	@Test
+	public void testBuildMimeMessage() throws Exception {
+		// Note: setFrom(String email), addCc(String email), addReplyTo(String email, String name),
+		// 		and addHeader(String name, String value) have test(s) of their own and should not
+		//		be the cause of failure for this test if their test(s) have passed.
+		
+		// Set subject, hostname, and From address
+		email.setSubject("Test Subject");
+		email.setHostName("test.com");
+		email.setFrom(TEST_EMAILS[0]);
+		// Add To address, BCC address, CC address, Reply address, and header
+		email.addTo(TEST_EMAILS[1]);
+		email.addBcc(TEST_EMAILS[2]);
+		email.addCc(TEST_EMAILS[3]);
+		email.addReplyTo(TEST_EMAILS[4], "John Doe");
+		email.addHeader("KeyStr", "ValueStr");
+		
+		// Call buildMimeMessage
+		email.buildMimeMessage();
+		
+		// Recipients are the To, BCC, and CC addresses
+		String[] expectedRecipients = {TEST_EMAILS[1], TEST_EMAILS[2], TEST_EMAILS[3]};
+		ArrayList<String> actualArrayList = new ArrayList<String>();
+		
+		// Convert to a String each Address element in the Address[] returned from 
+		// 		email.getMimeMessage().getAllRecipients() and add the String to the ArrayList
+		for (Address address : email.getMimeMessage().getAllRecipients()) {
+			actualArrayList.add(address.toString());
+		} // END of for loop that goes through all Address elements in Address[]
+		
+		// Convert the ArrayList<String> to an Object[] and then to a String[]
+		Object[] actualObjectArray = actualArrayList.toArray();
+		String[] actualRecipients = Arrays.copyOf(actualObjectArray, actualObjectArray.length, String[].class);
+		
+		// Sort both the expected and actual recipients arrays, so they will both be in the same order
+		Arrays.sort(expectedRecipients);
+		Arrays.sort(actualRecipients);
+		
+		// Use assertArrayEquals to check if every corresponding element in the two String[] match
+		assertArrayEquals(expectedRecipients, actualRecipients);
+	} // END of Test 1 for buildMimeMessage()
+	
+	// Test 2 for buildMimeMessage()
+	@Test
+	public void test2BuildMimeMessage() throws Exception {
+		// Note: setFrom(String email) has a test of its own and should not
+		//		be the cause of failure for this test if its test has passed.
+		
+		// Set hostname and From address
+		email.setHostName("test.com");
+		email.setFrom(TEST_EMAILS[0]);
+		// Add a To address
+		email.addTo(TEST_EMAILS[1]);
+		
+		// Create and set the content for the email
+		MimeMultipart content = new MimeMultipart();
+		content.setPreamble("Preamble Test");
+		email.setContent(content);
+		
+		// Call buildMimeMessage()
+		email.buildMimeMessage();
+		// Check if the created content matches email.getMimeMessage().getContent()
+		assertEquals(content, email.getMimeMessage().getContent());
+	} // END of Test 2 for buildMimeMessage()
+	
+	// Test 3 for buildMimeMessage()
+	@Test (expected = EmailException.class)
+	public void test3BuildMimeMessage() throws Exception {
+		// Should throw an exception for not including a host
+		email.buildMimeMessage();
+	} // END of Test 3 for buildMimeMessage()
+	
+	// Test 4 for buildMimeMessage()
+	@Test (expected = EmailException.class)
+	public void test4BuildMimeMessage() throws Exception {
+		// Set the hostname
+		email.setHostName("test.com");
+		// Should throw an exception for not including a From address
+		email.buildMimeMessage();
+	} // END of Test 4 for buildMimeMessage()
+	
+	// Test 5 for buildMimeMessage()
+	@Test (expected = EmailException.class)
+	public void test5BuildMimeMessage() throws Exception {
+		// Note: setFrom(String email) has a test of its own and should not
+		//		be the cause of failure for this test if its test has passed.
+		
+		// Set the hostname and From address
+		email.setHostName("test.com");
+		email.setFrom(TEST_EMAILS[0]);
+		// Should throw an exception for not including any To addresses
+		email.buildMimeMessage();
+	} // END of Test 5 for buildMimeMessage()
 }
