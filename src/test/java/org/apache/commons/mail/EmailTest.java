@@ -204,4 +204,32 @@ public class EmailTest {
 		// Should throw an exception for not including any To addresses
 		email.buildMimeMessage();
 	} // END of Test 5 for buildMimeMessage()
+	
+	// Test 1 for getHostName()
+	@Test
+	public void testGetHostName() throws Exception {
+		String expectedHostName = "test.com";
+		// Set the hostname
+		email.setHostName(expectedHostName);
+		
+		// Call getHostName() and check if the expected and actual match
+		String actualHostName = email.getHostName();
+		assertEquals(expectedHostName, actualHostName);
+	} // END of Test 1 for getHostName()
+	
+	// Test 2 for getHostName()
+	@Test
+	public void test2GetHostName() throws Exception {
+		String expectedHostName = "test.com";
+		// Create properties object and use it to create a session
+		Properties prop = new Properties();
+		prop.put(EmailConstants.MAIL_HOST, expectedHostName);
+		Session expectedSession = Session.getInstance(prop);
+		// Set the session
+		email.setMailSession(expectedSession);
+		
+		// Call getHostName() and check if the expected and actual match
+		String actualHostName = email.getHostName();
+		assertEquals(expectedHostName, actualHostName);
+	} // END of Test 2 for getHostName()
 }
