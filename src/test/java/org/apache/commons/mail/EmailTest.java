@@ -3,8 +3,11 @@ package org.apache.commons.mail;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Properties;
 
 import javax.mail.Address;
@@ -245,4 +248,16 @@ public class EmailTest {
 		Date actualDate = email.getSentDate();
 		assertEquals(expectedDate, actualDate);
 	} // END of Test for getSentDate()
+	
+	// Test for getSocketConnectionTimeout()
+	@Test
+	public void testGetSocketConnectionTimeout() throws Exception {
+		// Set the socket connection timeout
+		int expectedConnectionTimeout = 100;
+		email.setSocketConnectionTimeout(expectedConnectionTimeout);
+		
+		// Call getSocketConnectionTimeout() and see if the expected and actual match
+		int actualConnectionTimeout = email.getSocketConnectionTimeout();
+		assertEquals(expectedConnectionTimeout, actualConnectionTimeout);
+	} // END of Test for getSocketConnectionTimeout()
 }
