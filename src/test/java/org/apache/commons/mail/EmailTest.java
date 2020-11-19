@@ -2,6 +2,10 @@ package org.apache.commons.mail;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Properties;
+
+import javax.mail.Session;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -75,4 +79,29 @@ public class EmailTest {
 		// Check if the From email address is ab@cd.com
 		assertEquals("ab@cd.com", email.getFromAddress().toString());
 	} // END of Test for setFrom(String email)
+	
+	// Test for getMailSession()
+	@Test
+	public void testGetMailSession() throws Exception {
+		// Create properties object and use it to create a session
+		Properties prop = new Properties();
+		prop.put(EmailConstants.MAIL_HOST, "test.com");
+		Session expectedSession = Session.getInstance(prop);
+		// Set the mail session
+		email.setMailSession(expectedSession);
+		
+		// Call getMailSession()
+		Session actualSession = email.getMailSession();
+		// Check that the session returned from getMailSession() is the
+		// 		same as the one that was created
+		assertEquals(expectedSession, actualSession);
+	} // END of Test for getMailSession()
+	
+	// Test 2 for getMailSession()
+	@Test (expected = EmailException.class)
+	public void test2GetMailSession() throws Exception {
+		// Should throw an exception for not having a hostname
+		// 		Don't need to save the result since it should throw an exception
+		email.getMailSession();
+	} // END of Test 2 for getMailSession()
 }
