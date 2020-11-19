@@ -41,4 +41,20 @@ public class EmailTest {
 		// Check if the CC'd email is ab@cd.com
 		assertEquals("ab@cd.com", email.getCcAddresses().get(0).toString());
 	} // END of Test for addCc(String email)
+	
+	// Test 1 for addHeader(String name, String value)
+	@Test
+	public void testHeader() throws Exception {
+		// Call addHeader with key "KeyStr" and value "ValueStr"
+		email.addHeader("KeyStr", "ValueStr");
+		// Check if the value for key "KeyStr" is "ValueStr"
+		assertEquals("ValueStr", email.headers.get("KeyStr"));
+	} // END of Test 1 for addHeader(String name, String value)
+	
+	// Test 2 for addHeader(String name, String value)
+	@Test (expected = IllegalArgumentException.class)
+	public void test2Header() throws Exception {
+		// Should throw an exception for having an empty key
+		email.addHeader("", "ValueStr");
+	} // END of Test 2 for addHeader(String name, String value)
 }
