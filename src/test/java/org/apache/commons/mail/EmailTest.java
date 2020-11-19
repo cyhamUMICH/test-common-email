@@ -32,4 +32,13 @@ public class EmailTest {
 		// Check if the number of BCC'd emails is 5
 		assertEquals(5, email.getBccAddresses().size());
 	} // END of Test for addBcc(String... emails)
+	
+	// Test for addCc(String email)
+	@Test
+	public void testAddCc() throws Exception {
+		// Call addCc with first email in TEST_EMAILS
+		email.addCc(TEST_EMAILS[0]);
+		// Check if the CC'd email is ab@cd.com
+		assertEquals("ab@cd.com", email.getCcAddresses().get(0).toString());
+	} // END of Test for addCc(String email)
 }
