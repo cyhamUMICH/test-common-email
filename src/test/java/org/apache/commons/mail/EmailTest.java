@@ -232,4 +232,17 @@ public class EmailTest {
 		String actualHostName = email.getHostName();
 		assertEquals(expectedHostName, actualHostName);
 	} // END of Test 2 for getHostName()
+	
+	// Test for getSentDate()
+	@Test
+	public void testGetSentDate() throws Exception {
+		// Set the sent date
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+		Date expectedDate = df.parse("01/01/2020 12:00 PM");
+		email.setSentDate(expectedDate);
+		
+		// Call getSentDate() and see if the expected and actual match
+		Date actualDate = email.getSentDate();
+		assertEquals(expectedDate, actualDate);
+	} // END of Test for getSentDate()
 }
